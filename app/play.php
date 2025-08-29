@@ -81,36 +81,39 @@ $live_url = (isApache())
     </style>
     <video id="myElement"></video>
     <script type="text/javascript">
-        document.addEventListener('DOMContentLoaded', () => {
-            const playerConfig = {
-                title: '<?= $name ?>',
-                description: "SnehTV",
-                image: 'https://jiotv.catchup.cdn.jio.com/dare_images/images/<?= $cid ?>.png',
-                skin: {
-                    name: "netflix"
-                },
-                aspectratio: '16:9',
-                width: '100%',
-                mute: false,
-                autostart: true,
-                file: "<?= $live_url ?>",
-                type: "hls",
-                captions: {
-                    color: '#fff',
-                    fontSize: 16,
-                    backgroundOpacity: 0
-                }
-            };
-            const player = jwplayer("myElement").setup(playerConfig);
+       document.addEventListener('DOMContentLoaded', () => {
+    const playerConfig = {
+        title: '<?= $name ?>',
+        description: "SnehTV",
+        image: 'https://jiotv.catchup.cdn.jio.com/dare_images/images/<?= $cid ?>.png',
+        skin: {
+            name: "netflix"
+        },
+        aspectratio: '16:9',
+        width: '100%',
+        mute: false,
+        autostart: true,
+        file: "<?= $live_url ?>", // ✅ your local m3u8 file
+        type: "hls",
+        captions: {
+            color: '#fff',
+            fontSize: 16,
+            backgroundOpacity: 0
+        }
+    };
 
-            player.on('error', (e) => {
-                console.error('Player error:', e);
-                player.load({
-                    file: 'https://snehtv.vercel.app/video/tsjiotv.m3u8',
-                    type: 'hls'
-                });
-            });
+    const player = jwplayer("myElement").setup(playerConfig);
+
+    player.on('error', (e) => {
+        console.error('Player error:', e);
+        // Instead of external URL, reload your own file
+        player.load({
+            file: "<?= $live_url ?>",
+            type: "hls"
         });
+    });
+});
+
     </script>
 </body>
 
